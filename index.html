@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TheSchool</title>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Palanquin+Dark" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="newcss.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+         <header>
+             <img src="img/logo.png" alt="supermarket logo"/>
+         </header>
+         <main>
+             <h2>please enter your name & password</h2>
+             <form class="login" action="api.php" method="POST">
+                  <input type="hidden" name="action" value="login">
+                  <input type="text" name="admin_name" placeholder="Full Name">
+                  <input type="password" name="admin_password" placeholder="Password">
+                  <input type="submit" value="Enter">
+              </form>
+             <div class="textAlert"></div>
+         </main>
+        <script>
+            document.querySelector('.login').addEventListener('submit', function(event) {
+                event.preventDefault();
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    if (this.responseText == 1) {
+                            window.location = "http://localhost/TheSchool/main/index.php";
+                        }else{
+                             passwordAlert();
+                    }
+                }
+            }
+            xhttp.open("POST", "api.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("name=" + document.querySelector('input[name="admin_name"]').value + 
+                     "&password=" + document.querySelector('input[name="admin_password"]').value +
+                     "&action=" + document.querySelector('input[name="action"]').value);
+            document.querySelector('input[name="admin_name"]').value = "";
+            document.querySelector('input[name="admin_password"]').value = "";
+            });
+            
+            function passwordAlert(){
+                if (document.querySelector('.alert')){
+                    document.querySelector('.alert').remove();
+                }
+                var div = document.querySelector('.textAlert');
+                var span = document.createElement('sapn');
+                span.classList.add('alert');
+                span.textContent = "wrong name or password!";
+                div.appendChild(span);
+            }
+        </script>
+    </body>
+</html>
